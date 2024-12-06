@@ -26,6 +26,7 @@ routes = [
 ]
 
 [env.production.vars]
+CUSTOM_DOMAIN = "docker.cmdcentral.net"
 MODE = "production"
 TARGET_UPSTREAM = "https://registry-1.docker.io"
 
