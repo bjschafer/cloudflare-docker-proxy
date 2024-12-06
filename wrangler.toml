@@ -29,11 +29,3 @@ routes = [
 CUSTOM_DOMAIN = "docker.cmdcentral.net"
 MODE = "production"
 TARGET_UPSTREAM = "https://registry-1.docker.io"
-
-[env.staging]
-name = "cloudflare-docker-proxy-staging"
-# route = { pattern = "docker-staging.libcuda.so", custom_domain = true }
-
-[env.staging.vars]
-MODE = "staging"
-TARGET_UPSTREAM = ""
