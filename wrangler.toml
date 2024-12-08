@@ -1,5 +1,6 @@
 name = "cloudflare-docker-proxy"
 compatibility_date = "2023-12-01"
+main = "src/index.js"
 
 routes = [
     { pattern = "docker.cmdcentral.net", custom_domain = true },
