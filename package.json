@@ -10,14 +10,11 @@
     "npm-check-updates": "^17.1.11",
     "prettier": "^3.4.2",
     "typescript": "^5.7.2",
-    "webpack": "^5.97.1",
-    "webpack-cli": "^5.1.4",
     "wrangler": "^3.93.0"
   },
   "scripts": {
-    "format": "prettier --write '**/*.{js,css,json,md,ts}'",
-    "build": "webpack",
-    "dev": "wrangler dev src/index.ts --env dev"
+    "deploy": "wrangler deploy",
+    "fmt": "node_modules/.bin/prettier --check --write '**/*.ts'"
   },
   "license": "MIT",
   "main": "src/index.ts"
