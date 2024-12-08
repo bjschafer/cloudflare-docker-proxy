@@ -31,6 +31,17 @@ function routeByHosts(host) {
 }
 
 async function handleRequest(request) {
+  const initialResponse = await handleSingleRequest(request);
+  if (initialResponse.status === 401) {
+    const url = new URL(request.url);
+    url.hostname = routeByHosts("quay.cmdcentral.net");
+    request.url = url;
+    return handleSingleRequest(request);
+  }
+  return initialResponse;
+}
+
+async function handleSingleRequest(request) {
   const url = new URL(request.url);
   const upstream = routeByHosts(url.hostname);
   if (upstream === "") {
@@ -40,7 +51,7 @@ async function handleRequest(request) {
       }),
       {
         status: 404,
-      }
+      },
     );
   }
   const isDockerHub = upstream == dockerHub;
@@ -100,7 +111,7 @@ async function handleRequest(request) {
       return Response.redirect(redirectUrl, 301);
     }
   }
-  // foward requests
+  // forward requests
   const newUrl = new URL(upstream + url.pathname);
   const newReq = new Request(newUrl, {
     method: request.method,
@@ -144,16 +155,16 @@ async function fetchToken(wwwAuthenticate, scope, authorization) {
 }
 
 function responseUnauthorized(url) {
-  const headers = new(Headers);
+  const headers = new Headers();
   if (MODE == "debug") {
     headers.set(
       "Www-Authenticate",
-      `Bearer realm="http://${url.host}/v2/auth",service="cloudflare-docker-proxy"`
+      `Bearer realm="http://${url.host}/v2/auth",service="cloudflare-docker-proxy"`,
     );
   } else {
     headers.set(
       "Www-Authenticate",
-      `Bearer realm="https://${url.hostname}/v2/auth",service="cloudflare-docker-proxy"`
+      `Bearer realm="https://${url.hostname}/v2/auth",service="cloudflare-docker-proxy"`,
     );
   }
   return new Response(JSON.stringify({ message: "UNAUTHORIZED" }), {
