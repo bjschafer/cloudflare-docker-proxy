@@ -31,11 +31,16 @@ function routeByHosts(host) {
 }
 
 async function handleRequest(request) {
+  console.log("processing initial response");
   const initialResponse = await handleSingleRequest(request);
+  console.log(
+    "got initial response status of " + initialResponse.status.toString(),
+  );
   if (initialResponse.status === 401) {
     const url = new URL(request.url);
     url.hostname = routeByHosts("quay.cmdcentral.net");
     request.url = url;
+    console.log("retrying with url of " + url.toString());
     return handleSingleRequest(request);
   }
   return initialResponse;
